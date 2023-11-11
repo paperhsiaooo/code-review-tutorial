@@ -17,6 +17,11 @@ function About() {
             return false
         }
 
+        console.log('mail: ', payload.email);
+        if(payload.email.length < 20) {
+            return false
+        }
+
         if(payload.name === '') {
             return false
         }
@@ -32,9 +37,16 @@ function About() {
         const {startTime, endTime, sex, name, phone} = payload
         const startTimeString = format(startTime, 'yyyy/MM/dd HH:mm')
         const endTimeString = format(endTime, 'yyyy/MM/dd HH:mm')
+
+        if(sex < 1 || sex > 2) { 
+            return { success: false, result: '性別格式錯誤' }
+        }
         const sexString = sex === 1 ? '男' : '女'
 
-        return `活動時間：${startTimeString} ~ ${endTimeString}，性別：${sexString}，姓名：${name}，電話：${phone}`
+        return {
+            success: true,
+            result: `活動時間：${startTimeString} ~ ${endTimeString}，性別：${sexString}，姓名：${name}，電話：${phone}`
+        }
     }
     
     function handleHallClick() {
@@ -43,7 +55,12 @@ function About() {
         }
 
         const activityString = getActivityString(mockAPIData)
-        // get hall data with "activityString" from api ...
+
+        if(!activityString.success) {
+            alert(activityString.result)
+        } else {
+            // get hall data with "activityString" from api ...
+        }
     }
     
     const handleEmailClick = () => {
